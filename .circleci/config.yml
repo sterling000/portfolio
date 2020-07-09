@@ -8,7 +8,7 @@ jobs:
           app-name: serverless-framework-orb
           org-name: circleci
       - run:
-          command: serverless install plugin serverless-pseudo-parameters
+          command: serverless install plugin --name serverless-pseudo-parameters
           name: install-plugins
       - run:
           command: serverless deploy -v

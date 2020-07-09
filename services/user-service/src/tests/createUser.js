@@ -15,7 +15,12 @@ describe('createUser', () => {
   });
 
   it('implement tests here', async () => {
-    const response = await wrapped.run({});
+    process.env.DYNAMODB_USER_TABLE = 'user-service-userTable-dev';
+    const response = await wrapped.run({
+      body:JSON.stringify({
+      username: 'test',
+      password: '123'
+    })});
     expect(response).to.not.be.empty;
   });
 });
