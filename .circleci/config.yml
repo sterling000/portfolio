@@ -1,4 +1,15 @@
 jobs:
+  build-and-test:
+    executor:
+      "node/default"
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: npm install
+            - run: npm test
+            - store_test_results:
+                path: test-results
   deploy:
     executor: serverless/default
     steps:
@@ -8,9 +19,6 @@ jobs:
           app-name: serverless-framework-orb
           org-name: circleci
       - run:
-          command: serverless install plugin --name serverless-pseudo-parameters
-          name: install-plugins
-      - run:
           command: serverless deploy -v
           name: deploy
 orbs:
@@ -19,11 +27,12 @@ orbs:
   serverless: circleci/serverless-framework@1.0.1
 version: 2.1
 workflows:
+  build-and-test:
+    jobs:
+      - build-and-test
   deploy:
     jobs:
-      - node/test:
-          version: 13.11.0
       - deploy:
           requires:
-            - node/test
+            - build-and-test
           context: deckmasterweb-serverless
