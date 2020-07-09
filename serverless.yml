@@ -11,10 +11,10 @@
 #
 # Happy Coding!
 
-service: service-template
+service: user-service
 # app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: user-service-app
+org: sterling000
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -30,8 +30,14 @@ provider:
 #  region: us-east-1
 
 # you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
+  iamRoleStatements:
+  - Effect: Allow
+    Action: 
+      - "dynamodb:Query"
+      - "dynamodb:PutItem"
+    Resource:
+      - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}
+      - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}/index/pk
 #      Action:
 #        - "s3:ListBucket"
 #      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
@@ -59,17 +65,19 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  testFunction:
-    handler: src/functions/testFunction.testFunction
-  hello:
-    handler: handler.hello
+  createUser:
+    handler: services/user-service/src/functions/createUser.createUser
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
-#    events:
-#      - http:
-#          path: users/create
-#          method: get
+    events:
+     - http:
+         path: /v1/users
+         method: post
+         cors: true
+         request:
+          schema:
+            application/json: ${file(services/user-service/src/schema/create_user_request.json)}
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
@@ -100,7 +108,8 @@ functions:
 #            path: /hello
 
 #    Define function environment variables here
-#    environment:
+    environment:
+      DYNAMODB_USER_TABLE: ${self:custom.dynamodb.userTable}
 #      variable2: value2
 
 # you can add CloudFormation resource templates here
@@ -117,7 +126,25 @@ functions:
 plugins:
   - serverless-pseudo-parameters
   - serverless-mocha
+
+resources:
+  Resources:
+    userTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:custom.dynamodb.userTable}
+        AttributeDefinitions:
+          - AttributeName: pk
+            AttributeType: S
+        KeySchema:
+          - AttributeName: pk
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
 custom:
+  dynamodb:
+    userTable: ${self:service}-userTable-${self:provider.stage}
   serverless-mocha-plugin:
-    testTemplate: templates/test-template.ejs
-    functionTemplate: templates/function-template.ejs
+    testTemplate: services/template/templates/test-template.ejs
+    functionTemplate: services/template/templates/function-template.ejs
