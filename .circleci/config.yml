@@ -11,9 +11,9 @@ jobs:
           command: serverless deploy -v
           name: deploy
 orbs:
-  aws-cli: circleci/aws-cli@x.y
-  node: circleci/node@x.y
-  serverless: circleci/serverless-framework@x.y
+  aws-cli: circleci/aws-cli@1.2.1
+  node: circleci/node@3.0.1
+  serverless: circleci/serverless-framework@1.0.1
 version: 2.1
 workflows:
   deploy:
@@ -23,3 +23,4 @@ workflows:
       - deploy:
           requires:
             - node/test
+          context: deckmasterweb-serverless
