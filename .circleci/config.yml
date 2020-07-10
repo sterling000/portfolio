@@ -3,6 +3,7 @@ jobs:
     executor: serverless/default
     steps:
       - checkout
+      - run: npm install
       - aws-cli/setup
       - serverless/setup:
           app-name: serverless-framework-orb
