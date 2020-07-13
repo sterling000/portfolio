@@ -21,8 +21,8 @@ workflows:
     jobs:
       - node/test:
           version: 13.11.0
-          working_directory: ~/services/user-service/
       - deploy:
           requires:
             - node/test
           context: deckmasterweb-serverless
+app-dir: ~project/services/user-service
