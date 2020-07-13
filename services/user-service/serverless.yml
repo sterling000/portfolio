@@ -1,4 +1,4 @@
-service: user-service
+service: user-service-2
 # app and org for use with dashboard.serverless.com
 app: user-service-app
 org: sterling000
@@ -10,18 +10,16 @@ provider:
   region: us-west-2
 
 # you can add statements to the Lambda function's IAM Role here
-iamRoleStatements:
-- Effect: Allow
-  Action: 
-    - "dynamodb:Query"
-    - "dynamodb:PutItem"
-  Resource:
-    - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}
-    - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}/index/pk
+  iamRoleStatements:
+  - Effect: Allow
+    Action: 
+      - "dynamodb:Query"
+      - "dynamodb:PutItem"
+    Resource:
+      - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}
+      - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}/index/pk
 
 # you can define service wide environment variables here
-environment:
-  DYNAMODB_USER_TABLE: ${self:custom.dynamodb.userTable}
 
 # you can add packaging information here
 #package:
@@ -34,7 +32,7 @@ environment:
 
 functions:
   createUser:
-    handler: services/user-service/src/functions/createUser.createUser
+    handler: ./src/functions/createUser.createUser
     events:
      - http:
          path: /v1/users
@@ -42,13 +40,14 @@ functions:
          cors: true
          request:
           schema:
-            application/json: ${file(services/user-service/src/schema/create_user_request.json)}
+            application/json: ${file(./src/schema/create_user_request.json)}
 
 
 #    Define function environment variables here
 #    environment:
 #      variable2: value2
-
+    environment:
+      DYNAMODB_USER_TABLE: ${self:custom.dynamodb.userTable}
 # you can add CloudFormation resource templates here
 #resources:
 #  Resources:

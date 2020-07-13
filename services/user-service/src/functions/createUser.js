@@ -16,6 +16,8 @@ module.exports.createUser = async (event, context) => {
   try {
     const dynamodb = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
     const putResult = await dynamodb.put(newUserParams).promise();
+    console.log('User added to database.');
+    console.log('putResult', putResult);
     const response = {
       statusCode: 201,
       headers: {
