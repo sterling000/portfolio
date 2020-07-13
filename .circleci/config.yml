@@ -21,6 +21,7 @@ workflows:
     jobs:
       - node/test:
           version: 13.11.0
+          app-dir: /services/user-service
       - deploy:
           requires:
             - node/test
