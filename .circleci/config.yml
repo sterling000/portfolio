@@ -15,8 +15,11 @@ jobs:
     steps:
        - checkout
        - run: npm install
+       - run: npm install -g serverless-mocha
        - run: cd services/user-service
        - run: mocha src/tests/
+       - store_test_results:
+          path: test-results
   deploy:
     docker:
        - image: serverlesspolska/serverless-framework:latest
