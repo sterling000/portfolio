@@ -1,31 +1,24 @@
 version: 2.1
 
-orbs:
-  aws-cli: circleci/aws-cli@1.2.1
-  node: circleci/node@3.0.1
-  serverless: circleci/serverless-framework@1.0.1
-
 workflows:
-  deploy:
+  build:
     jobs:
-      - node/test:
-          version: 13.11.0
-          app-dir: services/user-service
-      - deploy:
+       - build
+       - deploy:
           requires:
-            - node/test
-          context: deckmasterweb-serverless
+             - build
 
 jobs:
-  deploy:
-    executor: serverless/default
+  build:
+    docker:
+       - image: serverlesspolska/serverless-framework:latest
     steps:
-      - checkout
-      - run: npm install
-      - aws-cli/setup
-      - serverless/setup:
-          app-name: serverless-framework-orb
-          org-name: circleci
-      - run:
-          command: serverless deploy -v
-          name: deploy
+       - checkout
+       - run: npm install
+       - run: cd services/user-service
+       - run: mocha src/tests/
+  deploy:
+    docker:
+       - image: serverlesspolska/serverless-framework:latest
+    steps:
+       - run: sls deploy -v
