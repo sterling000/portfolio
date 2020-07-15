@@ -15,7 +15,7 @@ jobs:
     steps:
        - checkout
        - run: npm install
-       - run: npm install -g serverless-mocha
+       - run: npm install -g mocha
        - run: cd services/user-service
        - run: mocha src/tests/
        - store_test_results:
