@@ -9,8 +9,16 @@ let wrapped = mochaPlugin.getWrapper('createUser', '/services/user-service/src/f
 const AWS = require('aws-sdk-mock');
 const AWS_SDK = require('aws-sdk');
 AWS.setSDKInstance(AWS_SDK);
+
 describe('createUser', () => {
   before((done) => {
+    AWS.mock('DynamoDB.DocumentClient', 'put', function (params, callback){
+      callback(null, "successfully put item in database");
+    });
+    done();
+  });
+  after((done) => {
+    AWS.restore('DynamoDB.DocumentClient');
     done();
   });
 
