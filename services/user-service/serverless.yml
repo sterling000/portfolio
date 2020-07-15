@@ -32,7 +32,7 @@ provider:
 
 functions:
   createUser:
-    handler: ./src/functions/createUser.createUser
+    handler: src/functions/createUser.createUser
     events:
      - http:
          path: /v1/users
@@ -40,7 +40,7 @@ functions:
          cors: true
          request:
           schema:
-            application/json: ${file(./src/schema/create_user_request.json)}
+            application/json: ${file(src/schema/create_user_request.json)}
 
 
 #    Define function environment variables here
