@@ -1,3 +1,21 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@1.2.1
+  node: circleci/node@3.0.1
+  serverless: circleci/serverless-framework@1.0.1
+
+workflows:
+  deploy:
+    jobs:
+      - node/test:
+          version: 13.11.0
+          app-dir: services/user-service
+      - deploy:
+          requires:
+            - node/test
+          context: deckmasterweb-serverless
+
 jobs:
   deploy:
     executor: serverless/default
@@ -11,18 +29,3 @@ jobs:
       - run:
           command: serverless deploy -v
           name: deploy
-orbs:
-  aws-cli: circleci/aws-cli@1.2.1
-  node: circleci/node@3.0.1
-  serverless: circleci/serverless-framework@1.0.1
-version: 2.1
-workflows:
-  deploy:
-    jobs:
-      - node/test:
-          version: 13.11.0
-          app-dir: services/user-service
-      - deploy:
-          requires:
-            - node/test
-          context: deckmasterweb-serverless
