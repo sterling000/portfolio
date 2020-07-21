@@ -27,5 +27,5 @@ jobs:
           app-name: serverless-framework-orb
           org-name: circleci
       - run:
-          command: serverless deploy -v
+          command: serverless deploy -v --config services/user-service/serverless.yml
           name: deploy
