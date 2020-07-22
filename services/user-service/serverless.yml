@@ -78,6 +78,7 @@ resources:
 plugins:
   - serverless-pseudo-parameters
   - serverless-mocha
+  - serverless-domain-manager
 
 custom:
   dynamodb:
@@ -85,3 +86,8 @@ custom:
   serverless-mocha-plugin:
     testTemplate: services/template/templates/test-template.ejs
     functionTemplate: services/template/templates/function-template.ejs
+  customDomain:
+    domainName: api.bsterling.ca
+    basePath: ''
+    stage: ${self:provider.stage}
+#    createRoute53Record: true
