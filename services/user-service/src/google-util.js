@@ -1,4 +1,4 @@
-import { google } from 'googleapis';
+const { google } = require('googleapis');
 
 /*******************/
 /** CONFIGURATION **/
@@ -46,7 +46,7 @@ function getGooglePlusApi(auth) {
 /**
  * Part 1: Create a Google URL and send to the client to log in the user.
  */
-function urlGoogle() {
+exports.urlGoogle = function() {
   const auth = createConnection();
   const url = getConnectionUrl(auth);
   return url;
@@ -55,7 +55,7 @@ function urlGoogle() {
 /**
  * Part 2: Take the "code" parameter which Google gives us once when the user logs in, then get the user's email and id.
  */
-function getGoogleAccountFromCode(code) {
+exports.getGoogleAccountFromCode = async function(code) {
   const data = await auth.getToken(code);
   const tokens = data.tokens;
   const auth = createConnection();
@@ -70,3 +70,4 @@ function getGoogleAccountFromCode(code) {
     tokens: tokens,
   };
 }
+
