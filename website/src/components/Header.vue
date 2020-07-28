@@ -19,11 +19,15 @@ import {bus} from '../main';
 export default {
     data() {
         return {
-            profile: false
+        }
+    },
+    computed:{
+        profile(){ 
+            return this.$store.state.profile;
         }
     },
     methods:{
-        onSignin(googleUser){
+        onSignin: function(googleUser){
             // Useful data for your client-side scripts:
             var profile = googleUser.getBasicProfile();
             console.log("ID: " + profile.getId()); // Don't send this directly to your server!
@@ -36,18 +40,26 @@ export default {
             // The ID token you need to pass to your backend:
             var id_token = googleUser.getAuthResponse().id_token;
             console.log("ID Token: " + id_token);
-            this.profile = profile;
+            this.$store.state.profile = profile;
             bus.$emit('signed-in', profile);
         },
-        signOut(){
+        onFailure: function(error){
+            console.log(error);
+        },
+        signOut: function(){
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(() => {
                 location.reload(true);
             });
         },
-        renderGoogleLoginButton(){
+        renderGoogleLoginButton: function(){
             gapi.signin2.render('google-signin-btn', {
-                onsuccess: this.onSignIn
+                'scope': 'profile email',
+                'width': 240,
+                'height': 50,
+                'theme': 'dark',
+                'onsuccess': this.onSignin,
+                'onfailure': this.onFailure
             });
         }
     },
