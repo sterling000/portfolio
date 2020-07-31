@@ -31,17 +31,6 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  loginGoogle:
-    handler: src/functions/loginGoogle.loginGoogle
-    events:
-    - http:
-      path: /v1/login-google
-      method: get
-    environment:
-      GOOGLE_REDIRECT_URL: https://bsterling.ca/login
-      GOOGLE_CLIENT_ID: 422988800869-s5ajjd4it1hpsjfeq4ub5kc5h9dpo9vl.apps.googleusercontent.com // don't commit this to github
-      GOOGLE_CLIENT_SECRET: joEY0510CXaeNWYHHAso7L_- // don't commit this to github
-
   createUser:
     handler: src/functions/createUser.createUser
     events:

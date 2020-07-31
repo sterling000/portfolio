@@ -1,5 +1,5 @@
 app: deckmaster
-name: deckmaster
+name: deckmasterweb
 component: website
 
 inputs:
