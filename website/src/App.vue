@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <app-header/>
+    <app-header></app-header>
     <router-view></router-view>
-    <app-footer/>
+     <app-footer/>
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue';
+import Header from './components/Header.vue'
 import Footer from './components/Footer.vue';
 
 export default {
@@ -32,7 +32,7 @@ export default {
   overflow: hidden;
 }
 
-#app {
+body {
   @include background;
   background: $primary-color;
   color: set-text-color($primary-color);
@@ -44,4 +44,5 @@ export default {
 .text-secondary {
   color: $secondary-color;
 }
+@import "./assets/styles/mobile.scss"
 </style>

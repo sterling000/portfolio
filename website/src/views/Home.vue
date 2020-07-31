@@ -32,8 +32,10 @@
 @import "../assets/styles/config.scss";
 
 #home{
-  min-height: calc(100vh - 12.5vh);
+  min-height: calc(100vh - 6.5vh);
   overflow: hidden;
+  padding: 25vh 0 0 0;
+  z-index: 1;
 }
 
 h1,

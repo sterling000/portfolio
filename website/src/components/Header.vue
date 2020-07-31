@@ -1,114 +1,87 @@
 <template>
-    <div id="nav">
-        <div class='sign-out' @click="signOut" v-if="profile">Sign out</div>
-        <div id="google-signin-btn" v-show="!profile"></div>
-        <div class='profileImage' v-show="profile"></div>
-    </div>
+    <header>
+        <div class="menu-btn" v-on:click='toggleMenu'>
+            <div class="btn-line"></div>
+            <div class="btn-line"></div>
+            <div class="btn-line"></div>
+        </div>
+
+        <nav class="menu">
+            <div class="menu-branding">
+                <div class="portrait"></div>
+            </div>
+            <ul class="menu-nav">
+                <li class="nav-item current">
+                    <router-link to="/" class="nav-link">Home</router-link>
+                </li>
+                <li class="nav-item ">
+                    <router-link to="/about" class="nav-link">About Me</router-link>
+                </li>
+                <li class="nav-item ">
+                    <router-link to="/work" class="nav-link">My Work</router-link>
+                </li>
+                <li class="nav-item ">
+                    <router-link to="/contact" class="nav-link">How To Reach Me</router-link>
+                </li>
+            </ul>
+        </nav>
+    </header>
 </template>
-
+    
 <script>
-
 export default {
-    data() {
+    data(){
         return {
-        }
-    },
-    computed:{
-        profile(){ 
-            return this.$store.state.profile;
-        },
-        profileImageUrl(){
-            return this.$store.state.profile.getImageUrl();
+            showMenu: false
         }
     },
     methods:{
-        onSignin: function(googleUser){
-            // Useful data for your client-side scripts:
-            var profile = googleUser.getBasicProfile();
-            console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-            console.log('Full Name: ' + profile.getName());
-            console.log('Given Name: ' + profile.getGivenName());
-            console.log('Family Name: ' + profile.getFamilyName());
-            console.log("Image URL: " + profile.getImageUrl());
-            console.log("Email: " + profile.getEmail());
+        toggleMenu(){
+            if(!this.showMenu){
+                this.menuBtn.classList.add('close');
+                this.menu.classList.add('show');
+                this.menuNav.classList.add('show');
+                this.menuBranding.classList.add('show');
+                this.navItems.forEach(item => item.classList.add('show'));
 
-            // The ID token you need to pass to your backend:
-            var id_token = googleUser.getAuthResponse().id_token;
-            console.log("ID Token: " + id_token);
-            this.$store.state.profile = profile;
-            //bus.$emit('signed-in', profile);
-            
-            var signInBtn = document.querySelector('google-signin-btn');
-            var profileImages = document.getElementsByClassName('profileImage');
-            profileImages[0].style.backgroundImage = "url('" + this.profileImageUrl + "')";
-        },
-        onFailure: function(error){
-            console.log(error);
-        },
-        signOut: function(){
-            console.log('sign-out');
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(() => {
-                location.reload(true);
-            });
-        },
-        renderGoogleLoginButton: function(){
-            gapi.signin2.render('google-signin-btn', {
-                'scope': 'profile email',
-                'width': 240,
-                'height': 50,
-                'theme': 'dark',
-                'onsuccess': this.onSignin,
-                'onfailure': this.onFailure
-            });
+                this.showMenu = true;
+            } else {
+                this.menuBtn.classList.remove('close');
+                this.menu.classList.remove('show');
+                this.menuNav.classList.remove('show');
+                this.menuBranding.classList.remove('show');
+                this.navItems.forEach(item => item.classList.remove('show'));
+
+                this.showMenu = false;
+            }
         }
     },
-    mounted(){
-        window.addEventListener("google-loaded", this.renderGoogleLoginButton);
-    }
+    computed:{
+        menuBtn(){
+            return document.querySelector('.menu-btn');
+        },
+        menu(){
+            return document.querySelector('.menu');
+        },
+        menuNav(){
+            return document.querySelector('.menu-nav');
+        },
+        menuBranding(){
+            return document.querySelector('.menu-branding');
+        },
+        navItems(){
+            return document.querySelectorAll('.nav-item');
+        },
+    }    
 }
 </script>
 
-<style lang="scss">
-#nav{
-    display: inline-block;
-    z-index: 2;
-    height: 6vh;
-    width: 100%;
+<style lang="scss" scoped>
+@import "../assets/styles/config.scss";
+@import "../assets/styles/menu.scss";
 
-    .sign-out{
-        display: inline-flex;
-        float: right;
-        background: #fff;
-        width: 80px;
-        height: 50px;
-        padding: 10px;
-        right: 35px;
-        color: #000;
-        margin: 5px;
-        cursor: pointer;
-        border-radius: 0.3rem;
-    }
-
-    .profileImage{
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: #fff  2px solid;
-        background-size: cover;
-        float: right;
-        background-color: #fff;
-        margin: 5px;
-    }
-
-    #google-signin-btn{
-        display: inline-flex;
-        float: right;
-        margin: 0;
-        border: none;
-        padding: 0;
-    }
+.text-secondary{
+    color: $secondary-color;
 }
-
-
+@import "../assets/styles/mobile.scss"
 </style>
