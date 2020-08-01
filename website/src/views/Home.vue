@@ -25,7 +25,14 @@
 </template>
 
 <script>
-
+export default {
+  mounted(){
+    document.body.classList.add('bg-img');
+  },
+  destroyed(){
+    document.body.classList.remove('bg-img');
+  }
+}
 </script>
 
 <style lang="scss">
@@ -66,4 +73,5 @@ a{
     color: $secondary-color;
   }
 }
+@import "../assets/styles/mobile.scss"
 </style>

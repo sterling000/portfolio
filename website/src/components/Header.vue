@@ -11,16 +11,16 @@
                 <div class="portrait"></div>
             </div>
             <ul class="menu-nav">
-                <li class="nav-item current">
+                <li id="Home" class="nav-item current">
                     <router-link to="/" class="nav-link">Home</router-link>
                 </li>
-                <li class="nav-item ">
+                <li id="About" class="nav-item ">
                     <router-link to="/about" class="nav-link">About Me</router-link>
                 </li>
-                <li class="nav-item ">
+                <li id="Work" class="nav-item ">
                     <router-link to="/work" class="nav-link">My Work</router-link>
                 </li>
-                <li class="nav-item ">
+                <li id="Contact" class="nav-item ">
                     <router-link to="/contact" class="nav-link">How To Reach Me</router-link>
                 </li>
             </ul>
@@ -72,7 +72,29 @@ export default {
         navItems(){
             return document.querySelectorAll('.nav-item');
         },
-    }    
+    },
+    watch: {
+        $route(to, from){
+            this.menuBtn.classList.remove('close');
+            this.menu.classList.remove('show');
+            this.menuNav.classList.remove('show');
+            this.menuBranding.classList.remove('show');
+            this.navItems.forEach(item => item.classList.remove('show'));
+
+            this.showMenu = false;
+
+            this.navItems.forEach(navItem => {
+                if(navItem.id == to.name)
+                {
+                    navItem.classList.add('current');
+                } else if(navItem.id == from.name){
+                    navItem.classList.remove('current');
+                }
+            });
+        }
+    },
+    mounted(){
+    }
 }
 </script>
 
