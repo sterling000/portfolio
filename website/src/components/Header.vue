@@ -11,7 +11,7 @@
                 <div class="portrait"></div>
             </div>
             <ul class="menu-nav">
-                <li id="Home" class="nav-item current">
+                <li id="Home" class="nav-item">
                     <router-link to="/" class="nav-link">Home</router-link>
                 </li>
                 <li id="About" class="nav-item ">

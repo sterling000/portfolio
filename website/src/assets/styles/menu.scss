@@ -88,11 +88,10 @@
         }
 
         .portrait {
-            background: url('../assets/portrait.jpg');
+            background: url('../assets/portrait-small.jpg');
             width: 250px;
             height: 250px;
             background-size: cover;
-            background-position: 0 -80px;
             border-radius: 50%;
             border: solid 3px $secondary-color;
         }
