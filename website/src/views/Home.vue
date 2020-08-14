@@ -20,6 +20,9 @@
       <a href="https://github.com/sterling000">
         <i class="fab fa-github fa-2x"></i>
       </a>
+      <a href="https://www.instagram.com/bsterling604/">
+        <i class="fab fa-instagram fa-2x"></i>
+      </a>
     </div>
   </div>
 </template>
